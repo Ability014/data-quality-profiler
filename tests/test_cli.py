@@ -1,4 +1,5 @@
 import json
+
 from dqp.cli import main
 
 
@@ -24,5 +25,5 @@ def test_missing_file_is_friendly(tmp_path, capsys):
     code = main(["profile", str(tmp_path / "nope.csv")])
     captured = capsys.readouterr()
     assert code == 1
-    assert captured.err.startswith("error:")   # went to stderr, not stdout
+    assert captured.err.startswith("error:")  # went to stderr, not stdout
     assert captured.out == ""

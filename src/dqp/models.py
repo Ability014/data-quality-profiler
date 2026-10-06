@@ -1,21 +1,23 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 
 
-class ColumnType(str, Enum):
+class ColumnType(StrEnum):
     """The type we infer for a column's values"""
+
     INTEGER = "integer"
     FLOAT = "float"
     BOOLEAN = "boolean"
     STRING = "string"
-    EMPTY = "empty"      # a column with no non-null values
+    EMPTY = "empty"  # a column with no non-null values
 
 
 @dataclass(frozen=True)
 class Dataset:
     """Raw CSV content: a header plus rows of untyped string cells."""
+
     header: list[str]
     rows: list[list[str]]
 
@@ -32,6 +34,7 @@ class Dataset:
 @dataclass(frozen=True)
 class NumericStats:
     """Stats that only make sense for numeric columns."""
+
     minimum: float
     maximum: float
     mean: float
@@ -40,11 +43,12 @@ class NumericStats:
 @dataclass(frozen=True)
 class ColumnProfile:
     """The profile of a single column"""
+
     name: str
     inferred_type: ColumnType
     total_count: int
     null_count: int
-    numeric: NumericStats | None = None   # present only for numeric columns
+    numeric: NumericStats | None = None  # present only for numeric columns
 
     @property
     def null_rate(self) -> float:
@@ -56,6 +60,7 @@ class ColumnProfile:
 @dataclass(frozen=True)
 class DatasetProfile:
     """The profile of a whole dataset: one ColumnProfile per column."""
+
     source: str
     row_count: int
     columns: list[ColumnProfile]

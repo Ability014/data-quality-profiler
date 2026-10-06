@@ -4,21 +4,30 @@ from dqp.models import ColumnType, Dataset
 from dqp.profile import infer_type, is_null, profile_column, profile_dataset
 
 
-@pytest.mark.parametrize("cell, expected", [
-    ("", True), ("   ", True), ("0", False), ("x", False),
-])
+@pytest.mark.parametrize(
+    "cell, expected",
+    [
+        ("", True),
+        ("   ", True),
+        ("0", False),
+        ("x", False),
+    ],
+)
 def test_is_null(cell, expected):
     assert is_null(cell) is expected
 
 
-@pytest.mark.parametrize("values, expected", [
-    (["1", "2", "3"], ColumnType.INTEGER),
-    (["1.5", "2", "3"], ColumnType.FLOAT),      # mixed int+float -> float
-    (["true", "FALSE"], ColumnType.BOOLEAN),    # case-insensitive
-    (["-3", "4", "0"], ColumnType.INTEGER),     # negatives still integer
-    (["a", "1", "x"], ColumnType.STRING),
-    ([], ColumnType.EMPTY),                      # no non-null values
-])
+@pytest.mark.parametrize(
+    "values, expected",
+    [
+        (["1", "2", "3"], ColumnType.INTEGER),
+        (["1.5", "2", "3"], ColumnType.FLOAT),  # mixed int+float -> float
+        (["true", "FALSE"], ColumnType.BOOLEAN),  # case-insensitive
+        (["-3", "4", "0"], ColumnType.INTEGER),  # negatives still integer
+        (["a", "1", "x"], ColumnType.STRING),
+        ([], ColumnType.EMPTY),  # no non-null values
+    ],
+)
 def test_infer_type(values, expected):
     assert infer_type(values) == expected
 

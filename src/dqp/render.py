@@ -14,13 +14,15 @@ def render_text(profile: DatasetProfile) -> str:
     ]
     for c in profile.columns:
         if c.numeric is not None:
-            mn, mx, me = (f"{c.numeric.minimum:.2f}", f"{c.numeric.maximum:.2f}",
-                         f"{c.numeric.mean:.2f}")
+            mn, mx, me = (
+                f"{c.numeric.minimum:.2f}",
+                f"{c.numeric.maximum:.2f}",
+                f"{c.numeric.mean:.2f}",
+            )
         else:
             mn = mx = me = "-"
         lines.append(
-            f"{c.name:<20}{c.inferred_type.value:<10}{c.null_rate:>8.1%}"
-            f"{mn:>12}{mx:>12}{me:>12}"
+            f"{c.name:<20}{c.inferred_type.value:<10}{c.null_rate:>8.1%}{mn:>12}{mx:>12}{me:>12}"
         )
     return "\n".join(lines)
 
@@ -37,7 +39,9 @@ def render_json(profile: DatasetProfile) -> str:
                 "total_count": c.total_count,
                 "null_count": c.null_count,
                 "null_rate": round(c.null_rate, 4),
-                "numeric": None if c.numeric is None else {
+                "numeric": None
+                if c.numeric is None
+                else {
                     "min": c.numeric.minimum,
                     "max": c.numeric.maximum,
                     "mean": c.numeric.mean,

@@ -15,7 +15,7 @@ def cmd_profile(args: argparse.Namespace) -> None:
     dataset = read_csv(args.path)
     profile = profile_dataset(dataset, source=str(args.path))
     output = render_json(profile) if args.format == "json" else render_text(profile)
-    print(output)                      # the one place results go to stdout
+    print(output)  # the one place results go to stdout
     return
 
 
@@ -27,15 +27,17 @@ def build_parser() -> argparse.ArgumentParser:
 
     parser.add_argument(
         "--version",
-        action="version",                     # built-in action: print and exit(0)
-        version=f"%(prog)s {__version__}",     # %(prog)s expands to "dqp"
+        action="version",  # built-in action: print and exit(0)
+        version=f"%(prog)s {__version__}",  # %(prog)s expands to "dqp"
     )
 
     sub = parser.add_subparsers(dest="command", required=True)
     profile_p = sub.add_parser("profile", help="profile a CSV file")
     profile_p.add_argument("path", type=Path, help="path to the CSV file")
     profile_p.add_argument(
-        "--format", choices=("text", "json"), default="text",
+        "--format",
+        choices=("text", "json"),
+        default="text",
         help="output format (default: text)",
     )
     profile_p.set_defaults(func=cmd_profile)
@@ -45,12 +47,12 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
-    args = parser.parse_args(argv)   # handles --version itself and exits
+    args = parser.parse_args(argv)  # handles --version itself and exits
 
     try:
-        args.func(args)                 # run the chosen subcommand
+        args.func(args)  # run the chosen subcommand
         return 0
-    except (DqpError, OSError) as exc:          # the single error boundary
+    except (DqpError, OSError) as exc:  # the single error boundary
         print(f"error: {exc}", file=sys.stderr)
         return 1
 
