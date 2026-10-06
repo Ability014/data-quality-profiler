@@ -1,0 +1,44 @@
+[project]
+name = "dqp"
+dynamic = ["version"]
+description = "A command-line data profiler"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pandas>=3.0.6",
+]
+
+[project.scripts]
+dqp = "dqp.cli:main"          # <-- this line makes `dqp` a real command
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/dqp/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/dqp"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]   # errors, pyflakes, import-sort, pyupgrade, bugbear
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]      # lets tests import dqp without installing it every change
+testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "mypy>=2.4.0",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.16.10",
+]

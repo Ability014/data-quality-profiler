@@ -1,0 +1,6 @@
+# Generate my git ignore file
+.venv/
+__pycache__/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
